@@ -73,6 +73,8 @@ end
 
 
 module YamlDb::Dump
+  RECORDS_PER_PAGE = 250
+  
 	def self.dump(io)
 		tables.each do |table|
 			dump_table(io, table)
@@ -114,7 +116,7 @@ module YamlDb::Dump
 		ActiveRecord::Base.connection.columns(table).map { |c| c.name }
 	end
 
-	def self.each_table_page(table, records_per_page=1000)
+	def self.each_table_page(table, records_per_page=YamlDb::Dump::RECORDS_PER_PAGE)
 		total_count = table_record_count(table)
 		pages = (total_count.to_f / records_per_page).ceil - 1
 		id = table_column_names(table).first
