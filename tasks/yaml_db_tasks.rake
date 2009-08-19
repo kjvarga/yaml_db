@@ -13,7 +13,7 @@ namespace :db do
 		desc "Dump contents of database to db/data.yml, or the file specified by DATA_FILE"
 		task(:dump => :environment) do
 		  file = ENV['DATA_FILE'] || db_dump_data_file
-		  batch_size = ENV['BATCH_SIZE'] || YamlDb::Dump::RECORDS_PER_PAGE
+		  batch_size = ENV['BATCH_SIZE'].nil? ? YamlDb::Dump::RECORDS_PER_PAGE : ENV['BATCH_SIZE'].to_i
 			YamlDb.dump(file, batch_size)
 		end
 
